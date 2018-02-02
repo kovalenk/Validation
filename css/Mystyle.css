@@ -1,0 +1,27 @@
+body{
+    background-color: #85797b;
+}
+.Mainbody{
+    padding: 100px;
+    width: 800px;
+}
+.Error-Val{
+    white-space: nowrap;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-shadow: 1px 1px 1px #000000;
+    color: #a94442;
+}
+.Success-Val{
+    color: #3c763d;
+    white-space: nowrap;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-shadow: 1px 1px 1px #000000a1;
+
+}
+.Nowrap{
+    white-space: nowrap;
+}
+.Borderfx{
+    border: 2px solid #ccc;
+    border-radius: 4px;
+}
