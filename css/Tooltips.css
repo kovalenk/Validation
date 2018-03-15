@@ -1,0 +1,27 @@
+.tooltiptext {
+    background-color: #484343;
+    color: #fff;
+    margin-top: -47px;
+    width: auto;
+    margin-left: 627px;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+}
+.tooltiptext span{
+    padding: 0px 10px;
+}
+
+.tooltiptext::after {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 8px;
+    margin-left: -5px;
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent #484343 transparent transparent;
+
+}

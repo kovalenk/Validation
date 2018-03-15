@@ -60,7 +60,7 @@ function Validation(o, form, language) {
         form[0].children[all].classList.add('Success-Val');
     }
     var InptValid = true;
-    $("div").remove(".EroorRow");
+    $("div").remove(".tooltiptext");
     for (var k in o) {
         var input = $(o[k].id),
             val = input.val(),
@@ -176,17 +176,12 @@ function presence(val, formGroup) {
     var StatusCurentValidation = true;
     formGroup[0].id = 'thatOne';
     if (val.length === 0) {
-        var getidval = document.getElementById("thatOne");
-        $(`<div class="form-group EroorRow Error-Val">
-            <label for="exampleInputEmail1"> `+errorNoVal+` </label>
-        </div>`).fadeIn(300).insertAfter("#thatOne");
-        document.getElementById("thatOne").style.height = "45px";
+        $(`<div class="tooltiptext"><span>`+errorNoVal+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
     }
     else {
-        document.getElementById("thatOne").style.height = "50px";
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
@@ -213,17 +208,12 @@ function minlength(val, formGroup, num) {
     }
     formGroup[0].id = 'thatOne';
     if (val.length < num) {
-        var getidval = document.getElementById("thatOne");
-        $(`<div class="form-group EroorRow Error-Val">
-            <label for="exampleInputEmail1"> `+errorLeng+` </label>
-        </div>`).fadeIn(300).insertAfter("#thatOne");
-        document.getElementById("thatOne").style.height = "45px";
+        $(`<div class="tooltiptext"><span>`+errorLeng+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
     }
     else {
-        document.getElementById("thatOne").style.height = "50px";
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
 
@@ -251,17 +241,12 @@ function maxlength(val, formGroup, num) {
     }
     formGroup[0].id = 'thatOne';
     if (val.length > num) {
-        var getidval = document.getElementById("thatOne");
-        $(`<div class="form-group EroorRow Error-Val">
-            <label for="exampleInputEmail1"> `+errorLeng+` </label>
-        </div>`).fadeIn(300).insertAfter("#thatOne");
-        document.getElementById("thatOne").style.height = "45px";
+        $(`<div class="tooltiptext"><span>`+errorLeng+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
     }
     else {
-        document.getElementById("thatOne").style.height = "50px";
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
 
@@ -278,17 +263,12 @@ function equalTo(val, formGroup, eqval) {
 
     formGroup[0].id = 'thatOne';
     if (val != eqval) {
-        var getidval = document.getElementById("thatOne");
-        $(`<div class="form-group EroorRow Error-Val">
-            <label for="exampleInputEmail1"> `+errorConfirm+` </label>
-        </div>`).fadeIn(300).insertAfter("#thatOne");
-        document.getElementById("thatOne").style.height = "45px";
+        getidval.innerHTML += `<div class="tooltiptext"><span>`+errorConfirm+`</span></div>`;
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
     }
     else {
-        document.getElementById("thatOne").style.height = "50px";
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
@@ -303,17 +283,12 @@ function isInteger(val, formGroup) {
     var StatusCurentValidation = true;
     formGroup[0].id = 'thatOne';
     if (+val != val || val.indexOf(".") != -1) {
-        var getidval = document.getElementById("thatOne");
-        $(`<div class="form-group EroorRow Error-Val">
-            <label for="exampleInputEmail1"> `+errorTypeint+` </label>
-        </div>`).fadeIn(300).insertAfter("#thatOne");
-        document.getElementById("thatOne").style.height = "45px";
+        $(`<div class="tooltiptext"><span>`+errorTypeint+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
     }
     else {
-        document.getElementById("thatOne").style.height = "50px";
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
@@ -329,17 +304,11 @@ function isDouble(val, formGroup) {
 
     formGroup[0].id = 'thatOne';
     if (+val != val || val.indexOf(".") != -1) {
-        document.getElementById("thatOne").style.height = "50px";
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
     else {
-
-        var getidval = document.getElementById("thatOne");
-        $(`<div class="form-group EroorRow Error-Val">
-            <label for="exampleInputEmail1"> `+errorTypedoub+` </label>
-        </div>`).fadeIn(300).insertAfter("#thatOne");
-        document.getElementById("thatOne").style.height = "45px";
+        $(`<div class="tooltiptext"><span>`+errorTypedoub+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
@@ -352,22 +321,16 @@ function isDouble(val, formGroup) {
 //*********************************************************
 function isMail(val, formGroup) {
     var StatusCurentValidation = true;
-
     var atpos = val.indexOf("@");
     var dotpos = val.lastIndexOf(".");
     formGroup[0].id = 'thatOne';
     if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= val.length) {
-        var getidval = document.getElementById("thatOne");
-        $(`<div class="form-group EroorRow Error-Val">
-            <label for="exampleInputEmail1"> `+errorEmail+` </label>
-        </div>`).fadeIn(300).insertAfter("#thatOne");
-        document.getElementById("thatOne").style.height = "45px";
+        $(`<div class="tooltiptext"><span>`+errorEmail+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
     }
     else {
-        document.getElementById("thatOne").style.height = "50px";
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
@@ -382,17 +345,12 @@ function isNumber(val, formGroup) {
 
     formGroup[0].id = 'thatOne';
     if (!/^[0-9]+$/.test(val)) {
-        var getidval = document.getElementById("thatOne");
-        $(`<div class="form-group EroorRow Error-Val">
-            <label for="exampleInputEmail1"> `+errorNum+` </label>
-        </div>`).fadeIn(300).insertAfter("#thatOne");
-        document.getElementById("thatOne").style.height = "45px";
+        $(`<div class="tooltiptext"><span>`+errorNum+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
     }
     else {
-        document.getElementById("thatOne").style.height = "50px";
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
@@ -410,17 +368,12 @@ function isUrl(val, formGroup) {
     var regexp = new RegExp(expression);
     formGroup[0].id = 'thatOne';
     if (regexp.test(val) == false) {
-        var getidval = document.getElementById("thatOne");
-        $(`<div class="form-group EroorRow Error-Val">
-            <label for="exampleInputEmail1"> `+errorUrl+` </label>
-        </div>`).fadeIn(300).insertAfter("#thatOne");
-        document.getElementById("thatOne").style.height = "45px";
+        $(`<div class="tooltiptext"><span>`+errorUrl+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
     }
     else {
-        document.getElementById("thatOne").style.height = "50px";
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
@@ -436,17 +389,12 @@ function isDate(val, formGroup) {
 
     formGroup[0].id = 'thatOne';
     if (/^(?:(0[1-9]|1[012])[\- \/.](0[1-9]|[12][0-9]|3[01])[\- \/.](19|20)[0-9]{2})$/.test(val) == false) {
-        var getidval = document.getElementById("thatOne");
-        $(`<div class="form-group EroorRow Error-Val">
-            <label for="exampleInputEmail1"> `+errorDate+` </label>
-        </div>`).fadeIn(300).insertAfter("#thatOne");
-        document.getElementById("thatOne").style.height = "45px";
+        $(`<div class="tooltiptext"><span>`+errorDate+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
     }
     else {
-        document.getElementById("thatOne").style.height = "50px";
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
@@ -463,18 +411,12 @@ function isValidInputENg(val, formGroup) {
 
     formGroup[0].id = 'thatOne';
     if (/^[a-zA-Z0-9]+$/.test(val) == false) {
-        var getidval = document.getElementById("thatOne");
-        $(`<div class="form-group EroorRow Error-Val">
-            <label for="exampleInputEmail1"> `+errorEngVal+` </label>
-        </div>`).fadeIn(300).insertAfter("#thatOne");
-
-        document.getElementById("thatOne").style.height = "45px";
+        $(`<div class="tooltiptext"><span>`+errorEngVal+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
     }
     else {
-        document.getElementById("thatOne").style.height = "50px";
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
@@ -502,16 +444,11 @@ function greaterThanOrEqualTo(val, formGroup, num) {
     }
     formGroup[0].id = 'thatOne';
     if (val >= num) {
-        document.getElementById("thatOne").style.height = "50px";
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
     else {
-        var getidval = document.getElementById("thatOne");
-        $(`<div class="form-group EroorRow Error-Val">
-            <label for="exampleInputEmail1"> `+errorgreater+` </label>
-        </div>`).fadeIn(300).insertAfter("#thatOne");
-        document.getElementById("thatOne").style.height = "45px";
+        $(`<div class="tooltiptext"><span>`+errorgreater+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
@@ -538,17 +475,12 @@ function lessThanOrEqualTo(val, formGroup, num) {
     }
     formGroup[0].id = 'thatOne';
     if (val <= num) {
-        document.getElementById("thatOne").style.height = "50px";
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
 
     }
     else {
-        var getidval = document.getElementById("thatOne");
-        $(`<div class="form-group EroorRow Error-Val">
-            <label for="exampleInputEmail1"> `+errorles+` </label>
-        </div>`).fadeIn(300).insertAfter("#thatOne");
-        document.getElementById("thatOne").style.height = "45px";
+        $(`<div class="tooltiptext"><span>`+errorles+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;

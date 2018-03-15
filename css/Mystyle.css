@@ -5,13 +5,13 @@ body{
     padding: 100px;
     width: 800px;
 }
-.Error-Val{
+.Error-Val label{
     white-space: nowrap;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-shadow: 1px 1px 1px #000000;
     color: #a94442;
 }
-.Success-Val{
+.Success-Val label{
     color: #3c763d;
     white-space: nowrap;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

@@ -8,10 +8,12 @@ function Validation_Vg() {
         },
         Password: {
             id: "#Password",
+
             presence: true
         },
         RePassword: {
             id: "#RePassword",
+            presence: true,
             equalTo: "#Password"
         },
         Email: {
@@ -38,7 +40,7 @@ function Validation_Vg() {
         }
     };
     if (Validation(validelem, form, language) == true) {
-        alert("dsdgsdgsdgsd");
+        alert("Okey");
         $("div").remove(".EroorRow");
         for (var all = 0; all < form[0].children.length; all++) {
             form[0].children[all].classList.remove('has-success');
