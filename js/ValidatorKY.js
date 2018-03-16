@@ -9,6 +9,7 @@
     errorUrl,
     errorDate,
     Languages;
+var status;
 function Localization(language) {
     switch (language) {
         case "ru":
@@ -46,9 +47,11 @@ function Localization(language) {
             break;
     }
 }
+status = false;
 function Validation(o, form, language) {
     Localization(language);
     Languages = language;
+    var Counter = 0;
     for (var all = 0; all < form[0].children.length; all++) {
         form[0].children[all].classList.remove('has-success');
         form[0].children[all].classList.remove('Success-Val');
@@ -62,12 +65,19 @@ function Validation(o, form, language) {
     var InptValid = true;
     $("div").remove(".tooltiptext");
     for (var k in o) {
+        Counter ++;
         var input = $(o[k].id),
             val = input.val(),
             formGroup = input.parents('.form-group');
+        if(status == "false")
+        {
+            formGroup.append(`<div class="Mtooltip" id="Mytooltip`+Counter+`"></div>`);
+            $(o[k].id).detach();
+            $('#Mytooltip'+Counter+'').append(input);
+        }
         if (o[k].presence != null) {
             if (o[k].presence == true) {
-                if (presence(val, formGroup) == false) {
+                if (presence(input, val, formGroup) == false) {
                     InptValid = false;
                     continue;
                 }
@@ -75,14 +85,14 @@ function Validation(o, form, language) {
         }
         if (o[k].minlength != null) {
             var num = o[k].minlength;
-            if (minlength(val, formGroup, num) == false) {
+            if (minlength(input, val, formGroup, num) == false) {
                 InptValid = false;
                 continue;
             }
         }
         if (o[k].maxlength != null) {
             var num = o[k].maxlength;
-            if (maxlength(val, formGroup, num) == false) {
+            if (maxlength(input, val, formGroup, num) == false) {
                 InptValid = false;
                 continue;
             }
@@ -90,14 +100,14 @@ function Validation(o, form, language) {
         if (o[k].equalTo != null) {
             var equal = $(o[k].equalTo),
                 eqval = equal.val();
-            if (equalTo(val, formGroup, eqval) == false) {
+            if (equalTo(input, val, formGroup, eqval) == false) {
                 InptValid = false;
                 continue;
             }
         }
         if (o[k].isInteger != null) {
             if (o[k].isInteger == true) {
-                if (isInteger(val, formGroup) == false) {
+                if (isInteger(input, val, formGroup) == false) {
                     InptValid = false;
                     continue;
                 }
@@ -105,7 +115,7 @@ function Validation(o, form, language) {
         }
         if (o[k].isDouble != null) {
             if (o[k].isDouble == true) {
-                if (isDouble(val, formGroup) == false) {
+                if (isDouble(input, val, formGroup) == false) {
                     InptValid = false;
                     continue;
                 }
@@ -113,7 +123,7 @@ function Validation(o, form, language) {
         }
         if (o[k].isMail != null) {
             if (o[k].isMail == true) {
-                if (isMail(val, formGroup) == false) {
+                if (isMail(input, val, formGroup) == false) {
                     InptValid = false;
                     continue;
                 }
@@ -121,7 +131,7 @@ function Validation(o, form, language) {
         }
         if (o[k].isNumber != null) {
             if (o[k].isNumber == true) {
-                if (isNumber(val, formGroup) == false) {
+                if (isNumber(input, val, formGroup) == false) {
                     InptValid = false;
                     continue;
                 }
@@ -129,7 +139,7 @@ function Validation(o, form, language) {
         }
         if (o[k].isUrl != null) {
             if (o[k].isUrl == true) {
-                if (isUrl(val, formGroup) == false) {
+                if (isUrl(input, val, formGroup) == false) {
                     InptValid = false;
                     continue;
                 }
@@ -137,7 +147,7 @@ function Validation(o, form, language) {
         }
         if (o[k].isDate != null) {
             if (o[k].isDate == true) {
-                if (isDate(val, formGroup) == false) {
+                if (isDate(input, val, formGroup) == false) {
                     InptValid = false;
                     continue;
                 }
@@ -145,7 +155,7 @@ function Validation(o, form, language) {
         }
         if (o[k].isValidInputENg != null) {
             if (o[k].isValidInputENg == true) {
-                if (isValidInputENg(val, formGroup) == false) {
+                if (isValidInputENg(input, val, formGroup) == false) {
                     InptValid = false;
                     continue;
                 }
@@ -153,30 +163,30 @@ function Validation(o, form, language) {
         }
         if (o[k].greaterThanOrEqualTo != null) {
             var num = o[k].greaterThanOrEqualTo;
-            if (greaterThanOrEqualTo(val, formGroup, num) == false) {
+            if (greaterThanOrEqualTo(input, val, formGroup, num) == false) {
                 InptValid = false;
                 continue;
             }
         }
         if (o[k].lessThanOrEqualTo != null) {
             var num = o[k].lessThanOrEqualTo;
-            if (lessThanOrEqualTo(val, formGroup, num) == false) {
+            if (lessThanOrEqualTo(input, val, formGroup, num) == false) {
                 InptValid = false;
                 continue;
             }
         }
     }
+    status = true;
     return InptValid;
 }
 
 //*********************************************************
 //    presence validation
 //*********************************************************
-function presence(val, formGroup) {
+function presence(input, val, formGroup) {
     var StatusCurentValidation = true;
-    formGroup[0].id = 'thatOne';
     if (val.length === 0) {
-        $(`<div class="tooltiptext"><span>`+errorNoVal+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
+        $(`<div class="tooltiptext"><span>`+errorNoVal+`</span></div>`).fadeIn(300).insertAfter(input);
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
@@ -185,16 +195,14 @@ function presence(val, formGroup) {
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
-    formGroup[0].id = '';
     return StatusCurentValidation;
 }
 
 //*********************************************************
 //    minlength validation
 //*********************************************************
-function minlength(val, formGroup, num) {
+function minlength(input, val, formGroup, num) {
     var StatusCurentValidation = true;
-
     switch (Languages) {
         case "ru":
             errorLeng = "Слишком короткое значени ( минимально " + num + " символов )";
@@ -206,9 +214,8 @@ function minlength(val, formGroup, num) {
             errorLeng = "Is too short (minimum is " + num + " characters)";
             break;
     }
-    formGroup[0].id = 'thatOne';
     if (val.length < num) {
-        $(`<div class="tooltiptext"><span>`+errorLeng+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
+        $(`<div class="tooltiptext"><span>`+errorLeng+`</span></div>`).fadeIn(300).insertAfter(input);
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
@@ -218,16 +225,14 @@ function minlength(val, formGroup, num) {
         formGroup.addClass('Success-Val').removeClass('Error-Val');
 
     }
-    formGroup[0].id = '';
     return StatusCurentValidation;
 }
 
 //*********************************************************
 //    maxlength validation
 //*********************************************************
-function maxlength(val, formGroup, num) {
+function maxlength(input, val, formGroup, num) {
     var StatusCurentValidation = true;
-
     switch (Languages) {
         case "ru":
             errorLeng = "Слишком длинное значение ( максимально " + num + " символов)";
@@ -239,9 +244,8 @@ function maxlength(val, formGroup, num) {
             errorLeng = "Is too long (maximum is " + num + " characters)";
             break;
     }
-    formGroup[0].id = 'thatOne';
     if (val.length > num) {
-        $(`<div class="tooltiptext"><span>`+errorLeng+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
+        $(`<div class="tooltiptext"><span>`+errorLeng+`</span></div>`).fadeIn(300).insertAfter(input);
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
@@ -251,19 +255,16 @@ function maxlength(val, formGroup, num) {
         formGroup.addClass('Success-Val').removeClass('Error-Val');
 
     }
-    formGroup[0].id = '';
     return StatusCurentValidation;
 }
 
 //*********************************************************
 //    equate validation
 //*********************************************************
-function equalTo(val, formGroup, eqval) {
+function equalTo(input, val, formGroup, eqval) {
     var StatusCurentValidation = true;
-
-    formGroup[0].id = 'thatOne';
     if (val != eqval) {
-        getidval.innerHTML += `<div class="tooltiptext"><span>`+errorConfirm+`</span></div>`;
+        $(`<div class="tooltiptext"><span>`+errorConfirm+`</span></div>`).fadeIn(300).insertAfter(input);
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
@@ -272,18 +273,16 @@ function equalTo(val, formGroup, eqval) {
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
-    formGroup[0].id = '';
     return StatusCurentValidation;
 }
 
 //*********************************************************
 //    integer validation
 //*********************************************************
-function isInteger(val, formGroup) {
+function isInteger(input, val, formGroup) {
     var StatusCurentValidation = true;
-    formGroup[0].id = 'thatOne';
     if (+val != val || val.indexOf(".") != -1) {
-        $(`<div class="tooltiptext"><span>`+errorTypeint+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
+        $(`<div class="tooltiptext"><span>`+errorTypeint+`</span></div>`).fadeIn(300).insertAfter(input);
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
@@ -292,40 +291,35 @@ function isInteger(val, formGroup) {
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
-    formGroup[0].id = '';
     return StatusCurentValidation;
 }
 
 //*********************************************************
 //    Double validation
 //*********************************************************
-function isDouble(val, formGroup) {
+function isDouble(input, val, formGroup) {
     var StatusCurentValidation = true;
-
-    formGroup[0].id = 'thatOne';
     if (+val != val || val.indexOf(".") != -1) {
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
     else {
-        $(`<div class="tooltiptext"><span>`+errorTypedoub+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
+        $(`<div class="tooltiptext"><span>`+errorTypedoub+`</span></div>`).fadeIn(300).insertAfter(input);
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
     }
-    formGroup[0].id = '';
     return StatusCurentValidation;
 }
 //*********************************************************
 //    Email validation
 //*********************************************************
-function isMail(val, formGroup) {
+function isMail(input, val, formGroup) {
     var StatusCurentValidation = true;
     var atpos = val.indexOf("@");
     var dotpos = val.lastIndexOf(".");
-    formGroup[0].id = 'thatOne';
     if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= val.length) {
-        $(`<div class="tooltiptext"><span>`+errorEmail+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
+        $(`<div class="tooltiptext"><span>`+errorEmail+`</span></div>`).fadeIn(300).insertAfter(input);
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
@@ -334,18 +328,15 @@ function isMail(val, formGroup) {
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
-    formGroup[0].id = '';
     return StatusCurentValidation;
 }
 //*********************************************************
 //    Number validation
 //*********************************************************
-function isNumber(val, formGroup) {
+function isNumber(input, val, formGroup) {
     var StatusCurentValidation = true;
-
-    formGroup[0].id = 'thatOne';
     if (!/^[0-9]+$/.test(val)) {
-        $(`<div class="tooltiptext"><span>`+errorNum+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
+        $(`<div class="tooltiptext"><span>`+errorNum+`</span></div>`).fadeIn(300).insertAfter(input);
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
@@ -354,21 +345,18 @@ function isNumber(val, formGroup) {
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
-    formGroup[0].id = '';
     return StatusCurentValidation;
 }
 
 //*********************************************************
 //    Url validation
 //*********************************************************
-function isUrl(val, formGroup) {
+function isUrl(input, val, formGroup) {
     var StatusCurentValidation = true;
-
     var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi
     var regexp = new RegExp(expression);
-    formGroup[0].id = 'thatOne';
     if (regexp.test(val) == false) {
-        $(`<div class="tooltiptext"><span>`+errorUrl+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
+        $(`<div class="tooltiptext"><span>`+errorUrl+`</span></div>`).fadeIn(300).insertAfter(input);
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
@@ -377,19 +365,16 @@ function isUrl(val, formGroup) {
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
-    formGroup[0].id = '';
     return StatusCurentValidation;
 }
 
 //*********************************************************
 //    date validation
 //*********************************************************
-function isDate(val, formGroup) {
+function isDate(input, val, formGroup) {
     var StatusCurentValidation = true;
-
-    formGroup[0].id = 'thatOne';
     if (/^(?:(0[1-9]|1[012])[\- \/.](0[1-9]|[12][0-9]|3[01])[\- \/.](19|20)[0-9]{2})$/.test(val) == false) {
-        $(`<div class="tooltiptext"><span>`+errorDate+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
+        $(`<div class="tooltiptext"><span>`+errorDate+`</span></div>`).fadeIn(300).insertAfter(input);
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
@@ -398,7 +383,6 @@ function isDate(val, formGroup) {
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
-    formGroup[0].id = '';
     return StatusCurentValidation;
 }
 
@@ -406,12 +390,10 @@ function isDate(val, formGroup) {
 //*********************************************************
 //    EditValidation(eng) validation
 //*********************************************************
-function isValidInputENg(val, formGroup) {
+function isValidInputENg(input, val, formGroup) {
     var StatusCurentValidation = true;
-
-    formGroup[0].id = 'thatOne';
     if (/^[a-zA-Z0-9]+$/.test(val) == false) {
-        $(`<div class="tooltiptext"><span>`+errorEngVal+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
+        $(`<div class="tooltiptext"><span>`+errorEngVal+`</span></div>`).fadeIn(300).insertAfter(input);
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
@@ -420,7 +402,6 @@ function isValidInputENg(val, formGroup) {
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
-    formGroup[0].id = '';
     return StatusCurentValidation;
 }
 
@@ -428,9 +409,8 @@ function isValidInputENg(val, formGroup) {
 //*********************************************************
 //    greaterThanOrEqualTo(eng) validation
 //*********************************************************
-function greaterThanOrEqualTo(val, formGroup, num) {
+function greaterThanOrEqualTo(input, val, formGroup, num) {
     var StatusCurentValidation = true;
-
     switch (Languages) {
         case "ru":
             var errorgreater = "Значение больше чем :" + num;
@@ -442,26 +422,23 @@ function greaterThanOrEqualTo(val, formGroup, num) {
             var errorgreater = "The value is greater than :" + num;
             break;
     }
-    formGroup[0].id = 'thatOne';
     if (val >= num) {
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
     }
     else {
-        $(`<div class="tooltiptext"><span>`+errorgreater+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
+        $(`<div class="tooltiptext"><span>`+errorgreater+`</span></div>`).fadeIn(300).insertAfter(input);
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
     }
-    formGroup[0].id = '';
     return StatusCurentValidation;
 }
 //*********************************************************
 //    lessThanOrEqualTo(eng) validation
 //*********************************************************
-function lessThanOrEqualTo(val, formGroup, num) {
+function lessThanOrEqualTo(input, val, formGroup, num) {
     var StatusCurentValidation = true;
-
     switch (Languages) {
         case "ru":
             var errorles = "Значение меньше чем :" + num;
@@ -473,19 +450,15 @@ function lessThanOrEqualTo(val, formGroup, num) {
             var errorles = "The value is less than :" + num;
             break;
     }
-    formGroup[0].id = 'thatOne';
     if (val <= num) {
         formGroup.addClass('has-success').removeClass('has-error');
         formGroup.addClass('Success-Val').removeClass('Error-Val');
-
     }
     else {
-        $(`<div class="tooltiptext"><span>`+errorles+`</span></div>`).fadeIn(300).insertAfter("#thatOne");
+        $(`<div class="tooltiptext"><span>`+errorles+`</span></div>`).fadeIn(300).insertAfter(input);
         formGroup.addClass('has-error').removeClass('has-success');
         formGroup.addClass('Error-Val').removeClass('Success-Val');
         StatusCurentValidation = false;
-
     }
-    formGroup[0].id = '';
     return StatusCurentValidation;
 }

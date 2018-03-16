@@ -1,14 +1,19 @@
+.Mtooltip{
+    position: relative;
+}
 .tooltiptext {
+    position: absolute;
     background-color: #484343;
     color: #fff;
-    margin-top: -47px;
     width: auto;
-    margin-left: 627px;
+    top: 2%;
+    left: 105%;
+    margin-left: 0px;
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-    position: absolute;
     z-index: 1;
+    white-space: nowrap;
 }
 .tooltiptext span{
     padding: 0px 10px;

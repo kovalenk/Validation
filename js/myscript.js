@@ -40,8 +40,8 @@ function Validation_Vg() {
         }
     };
     if (Validation(validelem, form, language) == true) {
-        alert("Okey");
-        $("div").remove(".EroorRow");
+        alert("*\\(^-^)/*");
+        $("div").remove(".tooltiptext");
         for (var all = 0; all < form[0].children.length; all++) {
             form[0].children[all].classList.remove('has-success');
             form[0].children[all].classList.remove('Success-Val');
